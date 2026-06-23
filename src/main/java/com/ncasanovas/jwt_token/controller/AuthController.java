@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpHeaders;
 
 import com.ncasanovas.jwt_token.model.LoginRequest;
 import com.ncasanovas.jwt_token.model.RegisterRequest;
 import com.ncasanovas.jwt_token.model.TokenResponse;
+import com.ncasanovas.jwt_token.service.AuthService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,22 +24,20 @@ public class AuthController {
 
   @PostMapping("/register")
   public ResponseEntity<TokenResponse> register(@RequestBody final RegisterRequest request) {
-    final TokenResponse token = service.register(request);
-    return RespnseEntity.ok(token);
-  }
-
-  
-  @PostMapping("/login")
-  public ResponseEntity<TokenResponse> authenticate(@RequestBody final LoginRequest request) {
-    final TokenResponse token = service.login(request);
+    final TokenResponse token = authService.register(request);
     return ResponseEntity.ok(token);
   }
 
-  
+  @PostMapping("/login")
+  public ResponseEntity<TokenResponse> authenticate(@RequestBody final LoginRequest request) {
+    final TokenResponse token = authService.login(request);
+    return ResponseEntity.ok(token);
+  }
+
   @PostMapping("/refresh")
   public TokenResponse refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authHeader) {
 
-    return service.refreshToken(authHeader);
+    return authService.refreshToken(authHeader);
   }
-  
+
 }

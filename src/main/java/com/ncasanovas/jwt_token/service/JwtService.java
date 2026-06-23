@@ -1,18 +1,20 @@
 package com.ncasanovas.jwt_token.service;
 
-import java.sql.Date;
+
+import java.util.Date;
 import java.util.Map;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Value;
 
 import com.ncasanovas.jwt_token.model.User;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
-import lombok.Value;
+import io.jsonwebtoken.Claims;
 
 @Service
 public class JwtService {
@@ -23,7 +25,7 @@ public class JwtService {
   @Value("${application.security.jwt.expiration}")
   private long jwtExpiration;
 
-  @Value("${application.security.jwt.refresh-token-expiration}")
+  @Value("${application.security.jwt.refresh-token.expiration}")
   private long refreshTokenExpiration;
 
   public String generateToken(final User user) {
@@ -32,6 +34,15 @@ public class JwtService {
 
   public String generateRefreshToken(final User user) {
     return buildToken(user, refreshTokenExpiration);
+  }
+
+  public String extractUsername(final String token) {
+    final Claims jwtToken = Jwts.parser()
+        .verifyWith(getSignInKey())
+        .build()
+        .parseSignedClaims(token)
+        .getPayload();
+    return jwtToken.getSubject();
   }
 
   private String buildToken(final User user, final long expiration) {
@@ -44,6 +55,25 @@ public class JwtService {
         .signWith(getSignInKey()) // Sign the token with the secret key
         .compact();
 
+  }
+
+  public boolean isValidToken(final String token, final User user) {
+    final String username = extractUsername(token);
+    return (username.equals(user.getEmail())) && !isTokenExpired(token);
+  }
+
+  private boolean isTokenExpired(final String token) {
+    return extractExpiration(token).before(new Date(System.currentTimeMillis()));
+
+  }
+
+  public Date extractExpiration(final String token) {
+    final Claims jwtToken = Jwts.parser()
+        .verifyWith(getSignInKey())
+        .build()
+        .parseSignedClaims(token)
+        .getPayload();
+    return jwtToken.getExpiration();
   }
 
   /**
