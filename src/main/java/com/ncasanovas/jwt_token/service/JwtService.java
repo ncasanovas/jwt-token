@@ -1,6 +1,5 @@
 package com.ncasanovas.jwt_token.service;
 
-
 import java.util.Date;
 import java.util.Map;
 
@@ -82,7 +81,9 @@ public class JwtService {
    * * @return The prepared SecretKey for cryptographic signing.
    */
   private SecretKey getSignInKey() {
-    byte[] keyBytes = Decoders.BASE64.decode(secretKey);
-    return Keys.hmacShaKeyFor(keyBytes);
+
+    byte[] keyBytes = Decoders.BASE64.decode(secretKey); // Decode secret key from application.properties
+
+    return Keys.hmacShaKeyFor(keyBytes); // Build the SecretKey object for use in HMAC
   }
 }
