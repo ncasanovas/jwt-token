@@ -67,7 +67,7 @@ public class AuthService {
   }
 
   private void revokeAllUserTokens(final User user) {
-    final List<Token> validUserTokens = tokenRepository.findAllValidTokenByUser(user.getId());
+    final List<Token> validUserTokens = tokenRepository.findAllValidIsFalseOrRevokedIsFalseByUserId(user.getId());
     if (!validUserTokens.isEmpty()) {
       for (final Token token : validUserTokens) {
         token.setExpired(true);
@@ -79,8 +79,8 @@ public class AuthService {
   }
 
   public TokenResponse refreshToken(final String authHeader) {
-    if (authHeader == null || !authHeader.startsWith("Bearer")) {
-      throw new IllegalArgumentException("Invalid Authorization header");
+    if (authHeader == null || !authHeader.startsWith("Bearer ")) {
+      throw new IllegalArgumentException("Invalid Bearer Token");
     }
 
     final String refreshToken = authHeader.substring(7);
