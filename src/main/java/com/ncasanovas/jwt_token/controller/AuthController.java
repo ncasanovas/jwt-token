@@ -36,7 +36,6 @@ public class AuthController {
 
   @PostMapping("/refresh")
   public TokenResponse refreshToken(@RequestHeader(HttpHeaders.AUTHORIZATION) final String authHeader) {
-
     return authService.refreshToken(authHeader);
   }
 
