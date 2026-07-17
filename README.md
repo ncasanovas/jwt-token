@@ -56,6 +56,7 @@ La aplicación arranca en `http://localhost:8080`.
 | POST | `/auth/register` | Registrar un nuevo usuario | `{ "email": "...", "password": "...", "name": "..." }` | `{ "access_token": "...", "refresh_token": "..." }` |
 | POST | `/auth/login` | Iniciar sesión | `{ "email": "...", "password": "..." }` | `{ "access_token": "...", "refresh_token": "..." }` |
 | POST | `/auth/refresh` | Refrescar token | `Authorization: Bearer <refresh_token>` | `{ "access_token": "...", "refresh_token": "..." }` |
+| POST | `/auth/logout` | Cerrar sesión (invalida el token) | `Authorization: Bearer <access_token>` | `200 OK` |
 
 ### Usuarios (`/users`)
 
