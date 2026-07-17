@@ -1,69 +1,69 @@
 # JWT Token
 
-REST API for JWT-based authentication using Spring Boot, Spring Security, and MySQL.
+API REST de autenticación con JWT usando Spring Boot, Spring Security y MySQL.
 
-## Technologies
+## Tecnologías
 
 - **Java 17**
 - **Spring Boot 4.1.0** (Web, Security, Data JPA)
-- **MySQL 8** with Hibernate
-- **jjwt 0.13.0** — JWT token generation and validation
-- **Lombok** — boilerplate reduction
-- **dotenv-java** — environment variables
+- **MySQL 8** con Hibernate
+- **jjwt 0.13.0** — generación y validación de tokens JWT
+- **Lombok** — reducción de código repetitivo
+- **dotenv-java** — variables de entorno
 
-## Prerequisites
+## Requisitos previos
 
 - JDK 17+
 - Maven 3.9+
 - MySQL 8+
 
-## Setup
+## Configuración
 
-Create a `.env` file in the project root with the following variables:
+Crear un archivo `.env` en la raíz del proyecto con las siguientes variables:
 
 ```env
 DB_URL=jdbc:mysql://localhost:3306/jwt_token
 DB_USERNAME=root
-DB_PASSWORD=your_password
-JWT_SECRET_KEY=your_jwt_secret_key
+DB_PASSWORD=tu_contraseña
+JWT_SECRET_KEY=tu_clave_secreta_jwt
 ```
 
-> The project already includes an example `.env` file ignored by Git (see `.gitignore`).
+> El proyecto ya incluye un archivo `.env` de ejemplo ignorado por Git (ver `.gitignore`).
 
-## Running
+## Ejecución
 
-### With Maven
+### Con Maven
 
 ```bash
 mvn spring-boot:run
 ```
 
-### With JAR
+### Con JAR
 
 ```bash
 mvn clean package -DskipTests
 java -jar target/jwt-token-0.0.1-SNAPSHOT.jar
 ```
 
-The application starts at `http://localhost:8080`.
+La aplicación arranca en `http://localhost:8080`.
 
 ## Endpoints
 
-### Authentication (`/auth`)
+### Autenticación (`/auth`)
 
-| Method | Path | Description | Body / Headers | Response |
-|--------|------|-------------|----------------|----------|
-| POST | `/auth/register` | Register a new user | `{ "email": "...", "password": "...", "name": "..." }` | `{ "access_token": "...", "refresh_token": "..." }` |
-| POST | `/auth/login` | Log in | `{ "email": "...", "password": "..." }` | `{ "access_token": "...", "refresh_token": "..." }` |
-| POST | `/auth/refresh` | Refresh token | `Authorization: Bearer <refresh_token>` | `{ "access_token": "...", "refresh_token": "..." }` |
+| Método | Ruta | Descripción | Body / Headers | Respuesta |
+|--------|------|-------------|----------------|-----------|
+| POST | `/auth/register` | Registrar un nuevo usuario | `{ "email": "...", "password": "...", "name": "..." }` | `{ "access_token": "...", "refresh_token": "..." }` |
+| POST | `/auth/login` | Iniciar sesión | `{ "email": "...", "password": "..." }` | `{ "access_token": "...", "refresh_token": "..." }` |
+| POST | `/auth/refresh` | Refrescar token | `Authorization: Bearer <refresh_token>` | `{ "access_token": "...", "refresh_token": "..." }` |
 
-### Users (`/users`)
+### Usuarios (`/users`)
 
-| Method | Path | Description | Response |
-|--------|------|-------------|----------|
-| GET | `/users` | List all users | `[{ "name": "...", "email": "..." }]` |
+| Método | Ruta | Descripción | Respuesta |
+|--------|------|-------------|-----------|
+| GET | `/users` | Listar todos los usuarios | `[{ "name": "...", "email": "..." }]` |
 
-## Project Structure
+## Estructura del proyecto
 
 ```
 jwt-token/
