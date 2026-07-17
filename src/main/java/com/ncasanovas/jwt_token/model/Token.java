@@ -25,7 +25,7 @@ public class Token {
     BEARER
 
   }
-  
+
   @Id
   @GeneratedValue
   public Long id;
