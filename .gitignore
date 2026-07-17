@@ -35,3 +35,14 @@ build/
 .env
 .env.*
 !.env.example
+
+# Logs
+*.log
+
+# macOS
+**/.DS_Store
+
+# Temp files
+*.swp
+*.swo
+*~
